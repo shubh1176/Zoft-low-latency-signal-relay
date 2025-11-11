@@ -1,0 +1,4 @@
+# Placeholder instrument configuration
+# symbol:
+#   venues: [ZERODHA, ALT]
+#   threshold: 0.05
