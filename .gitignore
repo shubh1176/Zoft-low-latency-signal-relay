@@ -1,0 +1,14 @@
+# Build artifacts
+build/
+
+# Logs and runtime data
+logs/
+
+# Python caches
+__pycache__/
+*.pyc
+
+# Local environment secrets
+.env
+.env.*
+.secrets/

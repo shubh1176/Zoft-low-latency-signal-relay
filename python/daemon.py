@@ -1,11 +1,12 @@
 from __future__ import annotations
 
-from dataclasses import asdict
 import json
 import subprocess
 import sys
 import time
 from typing import Any
+from dataclasses import asdict
+from pathlib import Path
 
 from alerting import AlertRouter, ParityEvent, StdoutSink
 from config import Settings, load_settings
@@ -14,6 +15,8 @@ from config import Settings, load_settings
 class ParityDaemon:
     def __init__(self, settings: Settings) -> None:
         self.settings = settings
+        self._project_root = Path(__file__).resolve().parent.parent
+        self.settings.logging_path.parent.mkdir(parents=True, exist_ok=True)
         self.alert_router = AlertRouter()
         self.alert_router.register(StdoutSink())
         self._cpp_process: subprocess.Popen[str] | None = None
@@ -30,7 +33,7 @@ class ParityDaemon:
         )
 
     def _cpp_binary_dir(self) -> str:
-        return str((self.settings.logging_path.parent / "build" / "cpp"))
+        return str(self._project_root / "build" / "cpp")
 
     def monitor_cpp_backend(self) -> None:
         if not self._cpp_process or not self._cpp_process.stdout:
@@ -78,6 +81,7 @@ def main() -> None:
         daemon.shutdown()
     finally:
         payload: dict[str, Any] = asdict(settings)
+        payload["logging_path"] = str(payload["logging_path"])
         print(json.dumps({"status": "stopped", "settings": payload}))
 
 

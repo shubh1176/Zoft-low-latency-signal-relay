@@ -20,6 +20,16 @@ Low-latency monitoring stack that detects parity violations between Zerodha inst
    ./scripts/run_daemon.sh
    ```
 
+### Environment
+
+Set credentials as environment variables before running:
+```bash
+export ZERODHA_API_KEY=...
+export ZERODHA_API_SECRET=...
+export ZERODHA_ACCESS_TOKEN=...  # if already fetched
+```
+Never commit secrets—store them in environment variables or ignored files like `.env`.
+
 ## Next Steps
 
 - Implement Zerodha WebSocket feed inside `FeedHandler` or through `python/clients/zerodha_client.py` with `pybind11` bindings.
